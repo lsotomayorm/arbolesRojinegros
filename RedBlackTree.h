@@ -201,7 +201,7 @@ public:
     return rotation_count;
   }
 
-  int getTreeHeight() const {
+  int getTreeHeight() {
     return treeHeightRec(this->root);
   }
 };
