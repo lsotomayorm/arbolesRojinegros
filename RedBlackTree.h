@@ -17,6 +17,7 @@ class RedBlackTree{
 private:
   NodeRBT<T> *root;
   NodeRBT<T> *NIL; // Centinela
+  long long rotation_count = 0;
 
   void leftRotate(NodeRBT<T> *x){
     NodeRBT<T> *y = x->right;
@@ -37,6 +38,8 @@ private:
     
     y->left = x;
     x->parent = y;
+
+    rotation_count++;
   }
 
   void rightRotate(NodeRBT<T> *x){
@@ -58,6 +61,8 @@ private:
     
     y->right = x;
     x->parent = y;
+
+    rotation_count++;
   }
 
   void insertFixup(NodeRBT<T> *k){
@@ -126,6 +131,15 @@ private:
     }
   }
 
+  int treeHeightRec(NodeRBT<T> *node){
+    if(!node)
+      return 0;
+    int hLeft = treeHeightRec(node->left);
+    int hRight = treeHeightRec(node->right);
+
+    return 1 + (hLeft > hRight ? hLeft : hRight);
+  }
+
 public:
   RedBlackTree(){
     NIL = new NodeRBT<T>;
@@ -181,5 +195,13 @@ public:
 
   bool search(T key) const {
     return search(this->root, key);
+  }
+
+  long long getRotationCount() const {
+    return rotation_count;
+  }
+
+  int getTreeHeight() const {
+    return treeHeightRec(this->root);
   }
 };

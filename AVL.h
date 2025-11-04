@@ -13,7 +13,8 @@ struct NodeAVL{
 template <typename T>
 class AVLTree{
 private:
-  NodeAVL *root;
+  NodeAVL<T> *root;
+  long long rotation_count = 0;
 
   int height(NodeAVL<T> *N){
     if(!N) // Modificado
@@ -40,6 +41,8 @@ private:
     y->height = std::max(height(y->left), height(y->right)) + 1;
     x->height = std::max(height(x->left), height(x->right)) + 1;
 
+    rotation_count++;
+
     return x;
   }
 
@@ -52,6 +55,8 @@ private:
 
     x->height = std::max(height(x->left), height(x->right)) + 1;
     y->height = std::max(height(y->left), height(y->right)) + 1;
+
+    rotation_count++;
 
     return y;
   }
@@ -134,5 +139,13 @@ public:
 
   bool search(T key) const {
     return search(root, key);
+  }
+
+  long long getRotationCount() const {
+    return rotation_count;
+  }
+
+  int getTreeHeight() const {
+    return root->height;
   }
 };
